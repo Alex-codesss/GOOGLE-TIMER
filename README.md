@@ -6,6 +6,10 @@ GOOGLE TIMER는 갤럭시탭에서 탁상시계처럼 사용하는 시각형 집
 
 현재 배포 주소는 소유자 전용이며, GitHub 저장소의 소스 코드는 별도로 실행할 수 있습니다.
 
+## 모바일 앱 (Android / Apple)
+
+[모바일 버전 다운로드](https://github.com/Alex-codesss/GOOGLE-TIMER/releases/tag/mobile-v4.0.0)에서 Android APK와 iOS 소스를 받을 수 있습니다. 별도 네이티브 프로젝트를 [native/](native/)에 준비했습니다. 설치·빌드 방법은 [모바일 안내](native/README.ko.md)를 확인하세요. Android APK는 GitHub Actions로 빌드하며, iOS 프로젝트는 Mac/Xcode에서 기기 서명 후 설치할 수 있습니다. 네이티브 앱에는 타이머를 내장하므로 ChatGPT 로그인과 인터넷 연결이 필요하지 않습니다.
+
 ## 기능
 
 - 다이얼 터치 또는 키보드 방향키로 1~60분 설정

@@ -42,3 +42,16 @@
 - 알림 만료 뒤 새로고침해도 다시 깜박이지 않음.
 - 15초 선택 후 새로고침 시 저장값 유지, 기본 10초로 복귀 선택 가능.
 - JavaScript 구문 검사와 git diff --check 통과.
+
+
+# 모바일 네이티브 빌드 확인
+
+2026-10-31, GitHub Actions run 41206028304.
+
+- Android assembleDebug 성공, 개발 서명 APK 생성 (4,052,959 bytes).
+- iOS Xcode 시뮬레이터 빌드 성공. 기기 설치용 서명 IPA는 생성하지 않음.
+- APK ZIP 무결성, 내장 HTML/JS/네이티브 브리지, APK 서명 블록 확인.
+- 외부 폰트 요청 제거 및 native PIN/패턴 SHA-256 계산 확인.
+- Android APK SHA-256: 50a24b40a38d4aec6e300bb2a4d127fbf0b0b36a9f6e6b6dbedf941246a25a20
+- 실제 갤럭시탭/iPad 기기에서의 실행 테스트는 수행하지 못함.
+- 다운로드: https://github.com/Alex-codesss/GOOGLE-TIMER/releases/tag/mobile-v4.0.0
