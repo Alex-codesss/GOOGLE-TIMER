@@ -1,1 +1,12 @@
 outputs/
+native/node_modules/
+native/www/
+native/android/.gradle/
+native/android/local.properties
+native/android/**/build/
+native/ios/DerivedData/
+native/ios/App/Pods/
+native/ios/App/App/public/
+native/ios/App/CapApp-SPM/.build/
+*.keystore
+*.jks

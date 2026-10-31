@@ -1,0 +1,24 @@
+import {cp,mkdir,readFile,writeFile} from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
+import path from 'node:path';
+import {build} from 'esbuild';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+await mkdir(path.join(root,'www'),{recursive:true});
+await cp(path.join(root,'../dist'),path.join(root,'www'),{recursive:true});
+let html=await readFile(path.join(root,'www/index.html'),'utf8');
+html=html.replace('<script src="app.js">','<script src="native-runtime.js"></script><script src="app.js">').replace('<title>집중 다이얼</title>','<title>GOOGLE TIMER</title>');
+await writeFile(path.join(root,'www/index.html'),html);
+let css=await readFile(path.join(root,'www/style.css'),'utf8');
+// Bundle runs without an external site, sign-in or font request.
+css=css.replace(/@import url\([^;]+;/g,'');
+css+='\nbody{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}';
+await writeFile(path.join(root,'www/style.css'),css);
+let js=await readFile(path.join(root,'www/app.js'),'utf8');
+js=js.replace("if('serviceWorker'in navigator)","if(!window.NativeTimer && 'serviceWorker'in navigator)");
+js=js.replace('async function syncWake(){','async function syncWake(){if(window.NativeTimer){await window.NativeTimer.setAwake((running||isBlinking())&&$(\'awake\').checked);return;}');
+await writeFile(path.join(root,'www/app.js'),js);
+let lock=await readFile(path.join(root,'www/lock.js'),'utf8');
+lock=lock.replace("return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),b=>b.toString(16).padStart(2,'0')).join('')",'return window.NativeTimer.hash(bytes)');
+await writeFile(path.join(root,'www/lock.js'),lock);
+await build({entryPoints:[path.join(root,'src/runtime.js')],bundle:true,format:'iife',outfile:path.join(root,'www/native-runtime.js'),minify:true});
+console.log('Native web assets prepared (offline, no sign-in).');

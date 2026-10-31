@@ -1,0 +1,78 @@
+name: Build GOOGLE TIMER mobile
+on:
+  workflow_dispatch:
+    inputs:
+      build_ios:
+        description: Build the iOS simulator app (not device-installable)
+        type: boolean
+        default: true
+permissions:
+  contents: read
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: native
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: native/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Preserve development signing key for future APK updates
+        uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: google-timer-development-signing-v1
+      - run: npm ci
+      - run: npm run sync
+      - name: Build installable APK
+        run: |
+          chmod +x android/gradlew
+          cd android
+          ./gradlew assembleDebug --no-daemon
+      - name: Name APK
+        run: |
+          mkdir -p artifacts
+          cp android/app/build/outputs/apk/debug/app-debug.apk artifacts/GOOGLE-TIMER-Android.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GOOGLE-TIMER-Android-APK
+          path: native/artifacts/GOOGLE-TIMER-Android.apk
+          retention-days: 30
+  ios:
+    if: inputs.build_ios
+    runs-on: macos-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: native
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: native/package-lock.json
+      - run: npm ci
+      - run: npm run prepare:web && npx cap sync ios
+      - name: Compile iPad/iPhone simulator app without distribution signing
+        run: |
+          xcodebuild -version
+          xcodebuild -project ios/App/App.xcodeproj -scheme App -sdk iphonesimulator -configuration Debug -derivedDataPath build/ios CODE_SIGNING_ALLOWED=NO build
+      - name: Package simulator build
+        run: |
+          mkdir -p artifacts
+          ditto -c -k --sequesterRsrc --keepParent build/ios/Build/Products/Debug-iphonesimulator/App.app artifacts/GOOGLE-TIMER-iOS-Simulator.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GOOGLE-TIMER-iOS-Simulator
+          path: native/artifacts/GOOGLE-TIMER-iOS-Simulator.zip
+          retention-days: 30
