@@ -2,9 +2,9 @@
 
 GOOGLE TIMER는 갤럭시탭에서 탁상시계처럼 사용하는 시각형 집중 타이머입니다. 남은 시간이 줄어들수록 원형 다이얼의 색칠된 부채꼴도 줄어듭니다.
 
-**실행:** https://focus-dial-rgann.rgann001.chatgpt.site/
+**실행:** https://alex-codesss.github.io/GOOGLE-TIMER/
 
-현재 배포 주소는 소유자 전용이며, GitHub 저장소의 소스 코드는 별도로 실행할 수 있습니다.
+로그인이나 설치 없이 웹 브라우저에서 바로 사용할 수 있는 공개 버전입니다.
 
 ## 모바일 앱 (Android / Apple)
 
