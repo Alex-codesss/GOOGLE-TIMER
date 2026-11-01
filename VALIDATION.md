@@ -44,6 +44,18 @@
 - JavaScript 구문 검사와 git diff --check 통과.
 
 
+# v5.0.0 확인 기록
+
+2026-11-01, 웹 소스 및 네이티브 에셋 동기화 검증.
+
+- Web Audio API 사운드 4종(차임, 싱잉볼, 목탁, 디지털 비프) 무오류 합성 및 test-sound 재생 인터페이스 검증.
+- 6종 테마 컬러 팔레트 CSS 변수(--accent, --sector, --soft) 동적 바인딩 및 순환 버튼/셀렉터 연동 확인.
+- 뽀모도로 루틴 모드: 25분 집중 ➔ 5분 휴식 전환, 휴식 전용 민트 테마 및 단계별 안내 뱃지 동작 확인.
+- 오늘의 집중 통계: 완료 세션 분/회차 누적, 날짜 변경 시 자동 리셋, 설정 내 초기화 버튼 확인.
+- node --check 및 git diff --check 무오류 통과.
+- native prepare:web 및 Capacitor sync 성공 (Android versionCode 50000, 5.0.0 동기화 완료).
+
+
 # 모바일 네이티브 빌드 확인
 
 2026-10-31, GitHub Actions run 41206028304.
