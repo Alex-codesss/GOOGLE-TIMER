@@ -56,14 +56,12 @@
 - native prepare:web 및 Capacitor sync 성공 (Android versionCode 50000, 5.0.0 동기화 완료).
 
 
-# 모바일 네이티브 빌드 확인
+# v5.0.0 모바일 네이티브 빌드 확인
 
-2026-10-31, GitHub Actions run 41206028304.
+2026-11-01, GitHub Actions run 41263260670.
 
-- Android assembleDebug 성공, 개발 서명 APK 생성 (4,052,959 bytes).
-- iOS Xcode 시뮬레이터 빌드 성공. 기기 설치용 서명 IPA는 생성하지 않음.
+- Android assembleDebug 성공, 개발 서명 APK 생성 (4,055,411 bytes).
+- iOS Xcode 시뮬레이터 빌드 성공 (1,400,491 bytes).
 - APK ZIP 무결성, 내장 HTML/JS/네이티브 브리지, APK 서명 블록 확인.
-- 외부 폰트 요청 제거 및 native PIN/패턴 SHA-256 계산 확인.
-- Android APK SHA-256: 50a24b40a38d4aec6e300bb2a4d127fbf0b0b36a9f6e6b6dbedf941246a25a20
-- 실제 갤럭시탭/iPad 기기에서의 실행 테스트는 수행하지 못함.
-- 다운로드: https://github.com/Alex-codesss/GOOGLE-TIMER/releases/tag/mobile-v4.0.0
+- Android APK SHA-256: 40e0e5092f40c85e750fef1d440819516006561816b89f8a0e819d68dc93ed64
+- Mac 원클릭 헬퍼 및 iPad 설치용 패키지(GOOGLE-TIMER-iPad-Mac.zip, 314,228 bytes) 갱신 완료.
