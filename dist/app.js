@@ -65,6 +65,17 @@ if($('pomodoro-mode'))$('pomodoro-mode').onchange=e=>{pomodoroMode=e.target.chec
 if($('reset-stats'))$('reset-stats').onclick=()=>{saveStats({date:getTodayStr(),minutes:0,count:0});updateStatsUI();$('notice').textContent='오늘의 집중 통계가 초기화되었습니다.'};
 $('settings').onclick=()=>$('settings-dialog').showModal();$('test-sound').onclick=chime;
 $('fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen()}catch{$('notice').textContent='이 환경에서는 전체 화면을 사용할 수 없어요.'}};
+
+const downloadDialog=$('download-dialog');
+if($('download-app')&&downloadDialog)$('download-app').onclick=()=>downloadDialog.showModal();
+if($('download-close')&&downloadDialog)$('download-close').onclick=()=>downloadDialog.close();
+if($('open-download-from-settings')&&downloadDialog)$('open-download-from-settings').onclick=()=>{$('settings-dialog').close();downloadDialog.showModal();};
+
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;});
+if($('pwa-install-btn'))$('pwa-install-btn').onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();const{outcome}=await deferredPrompt.userChoice;if(outcome==='accepted')deferredPrompt=null}else{alert('브라우저 메뉴에서 [홈 화면에 추가] 또는 주소창의 설치 아이콘을 눌러주세요.')}};
+if(window.NativeTimer&&$('download-app'))$('download-app').hidden=true;
+
 for(const id of['sound','awake','visual','blink-seconds',...viewOptions])$(id).onchange=()=>{if(id==='visual')finishAcknowledged=false;persist();render();syncWake()};$('task').oninput=persist;
 document.addEventListener('visibilitychange',()=>{tick();syncWake()});window.addEventListener('pagehide',persist);
 try{const s=JSON.parse(localStorage.getItem('focus-dial'));if(s&&Number.isFinite(s.duration)&&s.duration>=60&&s.duration<=3600){duration=s.duration;remaining=Math.max(0,Math.min(duration,Number(s.remaining)||0));running=!!s.running&&Number.isFinite(s.end);end=s.end;completed=!!s.completed;if([5,10,15,30,60].includes(s.blinkSeconds))$('blink-seconds').value=String(s.blinkSeconds);$('task').value=s.task||'';for(const id of['sound','awake','visual'])if(typeof s[id]==='boolean')$(id).checked=s[id];for(const id of viewOptions)if(typeof s.view?.[id]==='boolean')$(id).checked=s.view[id];document.body.classList.toggle('dark',!!s.dark);colorIndex=Number.isInteger(s.colorIndex)?Math.abs(s.colorIndex)%colors.length:0;if(['chime','bell','wood','digital'].includes(s.soundType)){soundType=s.soundType;if($('sound-type'))$('sound-type').value=soundType}if(typeof s.pomodoroMode==='boolean'){pomodoroMode=s.pomodoroMode;if($('pomodoro-mode'))$('pomodoro-mode').checked=pomodoroMode}if(['focus','break'].includes(s.pomoPhase))pomoPhase=s.pomoPhase;if(Number.isInteger(s.pomoCycle))pomoCycle=Math.max(1,Math.min(4,s.pomoCycle))}}catch{}
