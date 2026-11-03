@@ -10,7 +10,9 @@ html=html.replace('<script src="app.js">','<script src="native-runtime.js"></scr
 await writeFile(path.join(root,'www/index.html'),html);
 let css=await readFile(path.join(root,'www/style.css'),'utf8');
 // Bundle runs without an external site, sign-in or font request.
-css=css.replace(/@import url\([^;]+;/g,'');
+// Font URLs contain semicolons (wght@400;500;...). Match through the
+// closing URL, otherwise leftover text invalidates the following :root rule.
+css=css.replace(/@import\s+url\(\s*(?:"[^"]*"|'[^']*'|[^)]*)\s*\)\s*;/g,'');
 css+='\nbody{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}';
 await writeFile(path.join(root,'www/style.css'),css);
 let js=await readFile(path.join(root,'www/app.js'),'utf8');
